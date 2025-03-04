@@ -83,7 +83,7 @@ function BaseConverter({ config }: { config: ConverterConfig }) {
   );
 
   return (
-    <Card className="min-w-[440px]">
+    <Card className="w-full">
       <CardHeader>
         <CardTitle>{config.title}</CardTitle>
         <CardDescription>{config.description}</CardDescription>
@@ -220,28 +220,34 @@ function TemperatureConverter() {
 export default function KitchenConverter() {
   return (
     <div className="min-h-screen bg-background flex flex-col items-center p-4">
-      <div className="">
+      <div className="w-full max-w-md">
         <div className="flex justify-between items-center mb-4 w-full">
           <h1 className="text-xl font-bold text-center">Kitchen Converter</h1>
           <ThemeToggle />
         </div>
 
-        <Tabs defaultValue="volume" className="w-full max-w-md">
+        <Tabs defaultValue="volume" className="w-full">
           <TabsList className="grid grid-cols-3 mb-4 mx-auto">
-            <TabsTrigger value="volume" className="flex items-center gap-2">
-              <Droplets className="h-4 w-4" />
-              <span className="">Volume</span>
+            <TabsTrigger
+              value="volume"
+              className="flex items-center gap-1 sm:gap-2"
+            >
+              <Droplets className="h-3 w-3 sm:h-4 sm:w-4" />
+              <span className="text-xs sm:text-sm">Volume</span>
             </TabsTrigger>
-            <TabsTrigger value="weight" className="flex items-center gap-2">
-              <Scale className="h-4 w-4" />
-              <span className="">Weight</span>
+            <TabsTrigger
+              value="weight"
+              className="flex items-center gap-1 sm:gap-2"
+            >
+              <Scale className="h-3 w-3 sm:h-4 sm:w-4" />
+              <span className="text-xs sm:text-sm">Weight</span>
             </TabsTrigger>
             <TabsTrigger
               value="temperature"
-              className="flex items-center gap-2"
+              className="flex items-center gap-1 sm:gap-2"
             >
-              <Thermometer className="h-4 w-4" />
-              <span className="">Temperature</span>
+              <Thermometer className="h-3 w-3 sm:h-4 sm:w-4" />
+              <span className="text-xs sm:text-sm">Temp</span>
             </TabsTrigger>
           </TabsList>
 
