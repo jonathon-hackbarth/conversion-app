@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Card,
@@ -14,7 +14,6 @@ import { UnitSelector } from "@/components/unit-selector";
 import { ConversionDisplay } from "@/components/conversion-display";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { QuantityInput } from "@/components/quantity-input"; // Import the new component
-import { Calculator } from "@/components/calculator"; // Import the Calculator component
 
 interface ConverterConfig {
   title: string;
@@ -76,12 +75,6 @@ function BaseConverter({ config }: { config: ConverterConfig }) {
     setToUnit(null);
     setValue("1");
   }, []);
-
-  // Memoize the disabled state calculation
-  const isCalculatorDisabled = useMemo(
-    () => !fromUnit || !toUnit,
-    [fromUnit, toUnit]
-  );
 
   return (
     <Card>
