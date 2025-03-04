@@ -41,28 +41,28 @@ export function ConversionDisplay({
     () => (
       <>
         <div className="flex items-center rounded-md overflow-hidden">
-          <div className="flex-1 flex items-center justify-center bg-blue-600 dark:bg-blue-800 text-white p-3">
+          <div className="flex-1 flex items-center justify-center bg-blue-600 dark:bg-blue-800 text-white p-1">
             <span className="text-lg font-medium">{value}</span>
             <span className="ml-2 text-lg">{fromUnit}</span>
           </div>
           <div className="flex items-center justify-center px-4 bg-muted">
             <span className="text-lg font-medium">=</span>
           </div>
-          <div className="flex-1 flex items-center justify-center bg-orange-500 dark:bg-orange-700 text-white p-3">
+          <div className="flex-1 flex items-center justify-center bg-orange-500 dark:bg-orange-700 text-white p-1">
             <span className="text-lg font-medium">{result}</span>
             <span className="ml-2 text-lg">{toUnit}</span>
           </div>
         </div>
 
         <div className="flex items-center rounded-md overflow-hidden">
-          <div className="flex-1 flex items-center justify-center bg-orange-500 dark:bg-orange-700 text-white p-3">
+          <div className="flex-1 flex items-center justify-center bg-orange-500 dark:bg-orange-700 text-white p-1">
             <span className="text-lg font-medium">{value}</span>
             <span className="ml-2 text-lg">{toUnit}</span>
           </div>
           <div className="flex items-center justify-center px-4 bg-muted">
             <span className="text-lg font-medium">=</span>
           </div>
-          <div className="flex-1 flex items-center justify-center bg-blue-600 dark:bg-blue-800 text-white p-3">
+          <div className="flex-1 flex items-center justify-center bg-blue-600 dark:bg-blue-800 text-white p-1">
             <span className="text-lg font-medium">{inverseResult}</span>
             <span className="ml-2 text-lg">{fromUnit}</span>
           </div>

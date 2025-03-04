@@ -9,10 +9,11 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Scale, Thermometer, Droplets } from "lucide-react"; // Removed Delete import
+import { Scale, Thermometer, Droplets } from "lucide-react";
 import { UnitSelector } from "@/components/unit-selector";
 import { ConversionDisplay } from "@/components/conversion-display";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { QuantityInput } from "@/components/quantity-input"; // Import the new component
 import { Calculator } from "@/components/calculator"; // Import the Calculator component
 
 interface ConverterConfig {
@@ -88,25 +89,21 @@ function BaseConverter({ config }: { config: ConverterConfig }) {
         <CardTitle>{config.title}</CardTitle>
         <CardDescription>{config.description}</CardDescription>
       </CardHeader>
-      <CardContent className="space-y-3">
+      <CardContent className="space-y-6">
+        <QuantityInput value={value} onChange={handleValueChange} />
+        <ConversionDisplay
+          value={value}
+          fromUnit={fromUnit}
+          toUnit={toUnit}
+          calculate={config.calculate}
+          onValueChange={setValue}
+        />
         <UnitSelector
           options={config.options}
           fromUnit={fromUnit}
           toUnit={toUnit}
           onUnitSelect={handleUnitSelect}
           onClear={handleClear}
-        />
-        <ConversionDisplay
-          fromUnit={fromUnit}
-          toUnit={toUnit}
-          value={value}
-          calculate={config.calculate}
-          onValueChange={handleValueChange}
-        />
-        <Calculator
-          value={value}
-          onChange={handleValueChange}
-          disabled={isCalculatorDisabled}
         />
       </CardContent>
     </Card>
