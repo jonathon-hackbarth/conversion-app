@@ -14,6 +14,7 @@ import { UnitSelector } from "@/components/unit-selector";
 import { ConversionDisplay } from "@/components/conversion-display";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { QuantityInput } from "@/components/quantity-input"; // Import the new component
+import { BuyMeCoffee } from "@/components/buy-me-coffee"; // Import the new component
 
 interface ConverterConfig {
   title: string;
@@ -216,29 +217,32 @@ export default function KitchenConverter() {
         </div>
 
         <Tabs defaultValue="volume" className="w-full">
-          <TabsList className="grid grid-cols-3 mb-1 mx-auto">
-            <TabsTrigger
-              value="volume"
-              className="flex items-center gap-1 sm:gap-2"
-            >
-              <Droplets className="h-3 w-3 sm:h-4 sm:w-4" />
-              <span className="text-xs sm:text-sm">Volume</span>
-            </TabsTrigger>
-            <TabsTrigger
-              value="weight"
-              className="flex items-center gap-1 sm:gap-2"
-            >
-              <Scale className="h-3 w-3 sm:h-4 sm:w-4" />
-              <span className="text-xs sm:text-sm">Weight</span>
-            </TabsTrigger>
-            <TabsTrigger
-              value="temperature"
-              className="flex items-center gap-1 sm:gap-2"
-            >
-              <Thermometer className="h-3 w-3 sm:h-4 sm:w-4" />
-              <span className="text-xs sm:text-sm">Temp</span>
-            </TabsTrigger>
-          </TabsList>
+          <div className="mt-1 flex justify-between items-center">
+            <TabsList className="grid grid-cols-3">
+              <TabsTrigger
+                value="volume"
+                className="flex items-center gap-1 sm:gap-2"
+              >
+                <Droplets className="h-3 w-3 sm:h-4 sm:w-4" />
+                <span className="text-xs sm:text-sm">Volume</span>
+              </TabsTrigger>
+              <TabsTrigger
+                value="weight"
+                className="flex items-center gap-1 sm:gap-2"
+              >
+                <Scale className="h-3 w-3 sm:h-4 sm:w-4" />
+                <span className="text-xs sm:text-sm">Weight</span>
+              </TabsTrigger>
+              <TabsTrigger
+                value="temperature"
+                className="flex items-center gap-1 sm:gap-2"
+              >
+                <Thermometer className="h-3 w-3 sm:h-4 sm:w-4" />
+                <span className="text-xs sm:text-sm">Temp</span>
+              </TabsTrigger>
+            </TabsList>
+            <BuyMeCoffee />
+          </div>
 
           <TabsContent value="volume">
             <VolumeConverter />
