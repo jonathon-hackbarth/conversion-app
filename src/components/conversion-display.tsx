@@ -1,6 +1,5 @@
 "use client";
-
-import { useMemo, useCallback } from "react";
+import { useMemo } from "react";
 
 interface ConversionDisplayProps {
   fromUnit: string | null;
@@ -15,7 +14,6 @@ export function ConversionDisplay({
   toUnit,
   value,
   calculate,
-  onValueChange,
 }: ConversionDisplayProps) {
   // Memoize calculations to prevent recalculating on every render
   const result = useMemo(() => {

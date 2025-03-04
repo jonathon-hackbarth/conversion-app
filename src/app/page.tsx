@@ -9,103 +9,11 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
 import { Scale, Thermometer, Droplets } from "lucide-react"; // Removed Delete import
-import { cn } from "@/lib/utils";
 import { UnitSelector } from "@/components/unit-selector";
 import { ConversionDisplay } from "@/components/conversion-display";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Calculator } from "@/components/calculator"; // Import the Calculator component
-
-// Calculator component has been moved to its own file, removed from here
-
-function Slicer({
-  options,
-  value,
-  onChange,
-  className,
-}: {
-  options: { value: string; label: string }[];
-  value: string;
-  onChange: (value: string) => void;
-  className?: string;
-}) {
-  // Memoize the onClick handler for each option button
-  const handleOptionClick = useCallback(
-    (optionValue: string) => {
-      onChange(optionValue);
-    },
-    [onChange]
-  );
-
-  // Memoize the buttons to prevent unnecessary re-renders
-  const optionButtons = useMemo(() => {
-    return options.map((option) => (
-      <button
-        key={option.value}
-        onClick={() => handleOptionClick(option.value)}
-        className={cn(
-          "inline-flex h-12 items-center justify-center rounded-md transition-colors",
-          value === option.value
-            ? "bg-primary text-primary-foreground"
-            : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
-        )}
-      >
-        {option.label}
-      </button>
-    ));
-  }, [options, value, handleOptionClick]);
-
-  return (
-    <div
-      className={cn("grid grid-cols-2 gap-1.5 content-start h-full", className)}
-    >
-      {optionButtons}
-    </div>
-  );
-}
-
-interface ConverterProps {
-  fromValue: string;
-  setFromValue: (value: string) => void;
-  fromUnit: string;
-  setFromUnit: (unit: string) => void;
-  toUnit: string;
-  setToUnit: (unit: string) => void;
-  calculate: () => string;
-  options: { value: string; label: string }[];
-}
-
-function ConverterSection({
-  fromValue,
-  setFromValue,
-  fromUnit,
-  setFromUnit,
-  toUnit,
-  setToUnit,
-  calculate,
-  options,
-}: ConverterProps) {
-  return (
-    <div className="grid grid-cols-2 gap-4">
-      {/* Left column */}
-      <div className="grid content-start gap-2">
-        <Label>From</Label>
-        <Calculator value={fromValue} onChange={setFromValue} />
-        <Slicer options={options} value={fromUnit} onChange={setFromUnit} />
-      </div>
-
-      {/* Right column */}
-      <div className="grid content-start gap-2">
-        <Label>To</Label>
-        <div className="flex h-12 items-center justify-end rounded-md bg-muted px-3 py-2 text-lg">
-          {calculate()}
-        </div>
-        <Slicer options={options} value={toUnit} onChange={setToUnit} />
-      </div>
-    </div>
-  );
-}
 
 interface ConverterConfig {
   title: string;
