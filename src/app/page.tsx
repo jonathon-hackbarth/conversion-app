@@ -83,12 +83,12 @@ function BaseConverter({ config }: { config: ConverterConfig }) {
   );
 
   return (
-    <Card className="w-full">
+    <Card>
       <CardHeader>
         <CardTitle>{config.title}</CardTitle>
         <CardDescription>{config.description}</CardDescription>
       </CardHeader>
-      <CardContent className="space-y-6">
+      <CardContent className="space-y-3">
         <UnitSelector
           options={config.options}
           fromUnit={fromUnit}
@@ -103,7 +103,6 @@ function BaseConverter({ config }: { config: ConverterConfig }) {
           calculate={config.calculate}
           onValueChange={handleValueChange}
         />
-        <div className="h-px bg-border" />
         <Calculator
           value={value}
           onChange={handleValueChange}
@@ -221,13 +220,13 @@ export default function KitchenConverter() {
   return (
     <div className="min-h-screen bg-background flex flex-col items-center p-4">
       <div className="w-full max-w-md">
-        <div className="flex justify-between items-center mb-4 w-full">
+        <div className="flex justify-between items-center mb-1 w-full">
           <h1 className="text-xl font-bold text-center">Kitchen Converter</h1>
           <ThemeToggle />
         </div>
 
         <Tabs defaultValue="volume" className="w-full">
-          <TabsList className="grid grid-cols-3 mb-4 mx-auto">
+          <TabsList className="grid grid-cols-3 mb-1 mx-auto">
             <TabsTrigger
               value="volume"
               className="flex items-center gap-1 sm:gap-2"
