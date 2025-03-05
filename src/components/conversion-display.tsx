@@ -15,7 +15,6 @@ export function ConversionDisplay({
   value,
   calculate,
 }: ConversionDisplayProps) {
-  // Memoize calculations to prevent recalculating on every render
   const result = useMemo(() => {
     if (!fromUnit || !toUnit) return "0";
     return calculate(value, fromUnit, toUnit);
@@ -26,7 +25,6 @@ export function ConversionDisplay({
     return calculate(value, toUnit, fromUnit);
   }, [fromUnit, toUnit, value, calculate]);
 
-  // Memoize the empty state to prevent unnecessary re-renders
   const emptyStateJSX = useMemo(
     () => (
       <div className="h-24 flex items-center justify-center text-muted-foreground">
@@ -36,7 +34,6 @@ export function ConversionDisplay({
     []
   );
 
-  // Memoize the results display to prevent unnecessary re-renders
   const resultsDisplayJSX = useMemo(
     () => (
       <>

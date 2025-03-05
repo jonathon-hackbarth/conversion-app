@@ -33,7 +33,6 @@ export function ThemeProvider({
 }: ThemeProviderProps) {
   const [theme, setTheme] = useState<Theme>(defaultTheme);
 
-  // Memoize the theme setter function to maintain stable reference
   const handleThemeChange = useCallback((newTheme: Theme) => {
     setTheme(newTheme);
   }, []);

@@ -13,8 +13,8 @@ import { Scale, Thermometer, Droplets } from "lucide-react";
 import { UnitSelector } from "@/components/unit-selector";
 import { ConversionDisplay } from "@/components/conversion-display";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { QuantityInput } from "@/components/quantity-input"; // Import the new component
-import { BuyMeCoffee } from "@/components/buy-me-coffee"; // Import the new component
+import { QuantityInput } from "@/components/quantity-input";
+import { BuyMeCoffee } from "@/components/buy-me-coffee";
 
 interface ConverterConfig {
   title: string;
@@ -32,12 +32,10 @@ function BaseConverter({ config }: { config: ConverterConfig }) {
   );
   const [toUnit, setToUnit] = useState<string | null>(config.defaultToUnit);
 
-  // Memoize setValue to maintain a stable reference
   const handleValueChange = useCallback((newValue: string) => {
     setValue(newValue);
   }, []);
 
-  // Memoize unit selection handler
   const handleUnitSelect = useCallback(
     (unit: string) => {
       // Case 1: Unit is already selected as "from"
@@ -70,7 +68,6 @@ function BaseConverter({ config }: { config: ConverterConfig }) {
     [fromUnit, toUnit]
   );
 
-  // Memoize clear handler
   const handleClear = useCallback(() => {
     setFromUnit(null);
     setToUnit(null);
@@ -83,7 +80,7 @@ function BaseConverter({ config }: { config: ConverterConfig }) {
         <CardTitle>{config.title}</CardTitle>
         <CardDescription>{config.description}</CardDescription>
       </CardHeader>
-      <CardContent className="space-y-6">
+      <CardContent>
         <QuantityInput value={value} onChange={handleValueChange} />
         <ConversionDisplay
           value={value}
@@ -104,7 +101,6 @@ function BaseConverter({ config }: { config: ConverterConfig }) {
   );
 }
 
-// Configuration objects for each converter type
 const volumeConfig: ConverterConfig = {
   title: "Volume Converter",
   description: "Convert between common kitchen volume measurements",
@@ -194,7 +190,6 @@ const temperatureConfig: ConverterConfig = {
   },
 };
 
-// Updated converter components
 function VolumeConverter() {
   return <BaseConverter config={volumeConfig} />;
 }

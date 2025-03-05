@@ -18,7 +18,6 @@ export function UnitSelector({
   onUnitSelect,
   onClear,
 }: UnitSelectorProps) {
-  // Memoize the unit buttons to prevent unnecessary re-renders
   const unitButtons = useMemo(() => {
     return options.map((option) => (
       <button
