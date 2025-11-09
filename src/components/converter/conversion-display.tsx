@@ -1,5 +1,6 @@
 "use client";
 import { useMemo } from "react";
+import { ArrowRight } from "lucide-react";
 
 interface ConversionDisplayProps {
   fromUnit: string | null;
@@ -20,15 +21,10 @@ export function ConversionDisplay({
     return calculate(value, fromUnit, toUnit);
   }, [fromUnit, toUnit, value, calculate]);
 
-  const inverseResult = useMemo(() => {
-    if (!fromUnit || !toUnit) return "0";
-    return calculate(value, toUnit, fromUnit);
-  }, [fromUnit, toUnit, value, calculate]);
-
   const emptyStateJSX = useMemo(
     () => (
-      <div className="h-24 flex items-center justify-center text-muted-foreground">
-        Select two units to see conversion
+      <div className="h-20 flex items-center justify-center text-muted-foreground text-sm">
+        Select FROM and TO units to see conversion
       </div>
     ),
     []
@@ -36,41 +32,25 @@ export function ConversionDisplay({
 
   const resultsDisplayJSX = useMemo(
     () => (
-      <>
-        <div className="flex items-center rounded-md overflow-hidden">
-          <div className="flex-1 flex items-center justify-center bg-blue-600 dark:bg-blue-800 text-white p-1">
-            <span className="text-lg font-medium">{value}</span>
-            <span className="ml-2 text-lg">{fromUnit}</span>
+      <div className="bg-gradient-to-r from-blue-50 to-orange-50 dark:from-blue-950/30 dark:to-orange-950/30 rounded-lg p-4 border-2 border-muted">
+        <div className="flex items-center justify-center gap-3">
+          <div className="flex items-baseline gap-2">
+            <span className="text-3xl font-bold text-blue-600 dark:text-blue-400">{value}</span>
+            <span className="text-lg font-medium text-blue-600/70 dark:text-blue-400/70">{fromUnit}</span>
           </div>
-          <div className="flex items-center justify-center px-4 bg-muted">
-            <span className="text-lg font-medium">=</span>
-          </div>
-          <div className="flex-1 flex items-center justify-center bg-orange-500 dark:bg-orange-700 text-white p-1">
-            <span className="text-lg font-medium">{result}</span>
-            <span className="ml-2 text-lg">{toUnit}</span>
+          <ArrowRight className="h-6 w-6 text-muted-foreground" />
+          <div className="flex items-baseline gap-2">
+            <span className="text-3xl font-bold text-orange-600 dark:text-orange-400">{result}</span>
+            <span className="text-lg font-medium text-orange-600/70 dark:text-orange-400/70">{toUnit}</span>
           </div>
         </div>
-
-        <div className="flex items-center rounded-md overflow-hidden">
-          <div className="flex-1 flex items-center justify-center bg-orange-500 dark:bg-orange-700 text-white p-1">
-            <span className="text-lg font-medium">{value}</span>
-            <span className="ml-2 text-lg">{toUnit}</span>
-          </div>
-          <div className="flex items-center justify-center px-4 bg-muted">
-            <span className="text-lg font-medium">=</span>
-          </div>
-          <div className="flex-1 flex items-center justify-center bg-blue-600 dark:bg-blue-800 text-white p-1">
-            <span className="text-lg font-medium">{inverseResult}</span>
-            <span className="ml-2 text-lg">{fromUnit}</span>
-          </div>
-        </div>
-      </>
+      </div>
     ),
-    [fromUnit, toUnit, value, result, inverseResult]
+    [fromUnit, toUnit, value, result]
   );
 
   return (
-    <div className="space-y-4">
+    <div className="my-4">
       {fromUnit && toUnit ? resultsDisplayJSX : emptyStateJSX}
     </div>
   );

@@ -66,6 +66,13 @@ export function BaseConverter({ config }: BaseConverterProps) {
     setValue("1");
   }, []);
 
+  const handleSwap = useCallback(() => {
+    if (fromUnit && toUnit) {
+      setFromUnit(toUnit);
+      setToUnit(fromUnit);
+    }
+  }, [fromUnit, toUnit]);
+
   return (
     <Card>
       <CardHeader>
@@ -87,6 +94,7 @@ export function BaseConverter({ config }: BaseConverterProps) {
           toUnit={toUnit}
           onUnitSelect={handleUnitSelect}
           onClear={handleClear}
+          onSwap={handleSwap}
         />
       </CardContent>
     </Card>
