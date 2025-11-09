@@ -1,11 +1,18 @@
 "use client";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Scale, Thermometer, Droplets } from "lucide-react";
+import { Scale, Thermometer, Droplets, Ruler, Square, Gauge } from "lucide-react";
 import { BaseConverter } from "@/components/converter";
 import { ThemeToggle } from "@/components/theme";
 import { BuyMeCoffee } from "@/components/common";
-import { volumeConfig, weightConfig, temperatureConfig } from "@/constants";
+import { 
+  volumeConfig, 
+  weightConfig, 
+  temperatureConfig,
+  lengthConfig,
+  areaConfig,
+  speedConfig 
+} from "@/constants";
 
 interface TabConfig {
   value: string;
@@ -33,6 +40,24 @@ const tabs: TabConfig[] = [
     icon: <Thermometer className="h-3 w-3 sm:h-4 sm:w-4" />,
     config: temperatureConfig,
   },
+  {
+    value: "length",
+    label: "Length",
+    icon: <Ruler className="h-3 w-3 sm:h-4 sm:w-4" />,
+    config: lengthConfig,
+  },
+  {
+    value: "area",
+    label: "Area",
+    icon: <Square className="h-3 w-3 sm:h-4 sm:w-4" />,
+    config: areaConfig,
+  },
+  {
+    value: "speed",
+    label: "Speed",
+    icon: <Gauge className="h-3 w-3 sm:h-4 sm:w-4" />,
+    config: speedConfig,
+  },
 ];
 
 export default function KitchenConverter() {
@@ -46,7 +71,7 @@ export default function KitchenConverter() {
 
         <Tabs defaultValue="volume" className="w-full">
           <div className="mt-1 flex justify-between items-center">
-            <TabsList className="grid grid-cols-3">
+            <TabsList className="grid grid-cols-6">
               {tabs.map((tab) => (
                 <TabsTrigger
                   key={tab.value}

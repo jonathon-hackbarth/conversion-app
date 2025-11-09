@@ -18,7 +18,7 @@ interface BaseConverterProps {
 }
 
 export function BaseConverter({ config }: BaseConverterProps) {
-  const [value, setValue] = useState("1");
+  const [value, setValue] = useState(config.defaultValue || "1");
   const [fromUnit, setFromUnit] = useState<string | null>(
     config.defaultFromUnit
   );
@@ -63,8 +63,8 @@ export function BaseConverter({ config }: BaseConverterProps) {
   const handleClear = useCallback(() => {
     setFromUnit(null);
     setToUnit(null);
-    setValue("1");
-  }, []);
+    setValue(config.defaultValue || "1");
+  }, [config.defaultValue]);
 
   const handleSwap = useCallback(() => {
     if (fromUnit && toUnit) {
