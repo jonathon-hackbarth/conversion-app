@@ -11,6 +11,7 @@ const volumeFactors = {
   floz: 29.57,
   pint: 473.18,
   quart: 946.35,
+  gallon: 3785.41,
   ml: 1,
   liter: 1000,
 };
@@ -63,6 +64,7 @@ export const volumeConfig: ConverterConfig = {
     { value: "floz", label: "fl oz" },
     { value: "pint", label: "pint" },
     { value: "quart", label: "qt" },
+    { value: "gallon", label: "gal" },
     { value: "ml", label: "ml" },
     { value: "liter", label: "L" },
   ],
