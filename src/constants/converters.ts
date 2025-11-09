@@ -21,6 +21,7 @@ const weightFactors = {
   lb: 453.59,
   g: 1,
   kg: 1000,
+  ton: 1000000,
 };
 
 const lengthFactors = {
@@ -39,6 +40,7 @@ const areaFactors = {
   sqft: 929.03,
   sqyd: 8361.27,
   acre: 4046860,
+  sqmile: 25899881103.36,
   sqcm: 1,
   sqm: 10000,
   hectare: 100000000,
@@ -81,6 +83,7 @@ export const weightConfig: ConverterConfig = {
     { value: "lb", label: "lb" },
     { value: "g", label: "g" },
     { value: "kg", label: "kg" },
+    { value: "ton", label: "ton" },
   ],
   calculate: createLinearConverter(weightFactors),
 };
@@ -126,6 +129,7 @@ export const areaConfig: ConverterConfig = {
     { value: "sqft", label: "ft²" },
     { value: "sqyd", label: "yd²" },
     { value: "acre", label: "acre" },
+    { value: "sqmile", label: "mi²" },
     { value: "sqcm", label: "cm²" },
     { value: "sqm", label: "m²" },
     { value: "hectare", label: "ha" },
