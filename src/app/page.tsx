@@ -1,10 +1,10 @@
 "use client";
 
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Scale, Thermometer, Droplets, Ruler, Square, Gauge } from "lucide-react";
 import { BaseConverter } from "@/components/converter";
 import { ThemeToggle } from "@/components/theme";
 import { BuyMeCoffee } from "@/components/common";
+import { ResponsiveTabs } from "@/components/navigation";
 import { 
   volumeConfig, 
   weightConfig, 
@@ -25,37 +25,37 @@ const tabs: TabConfig[] = [
   {
     value: "volume",
     label: "Volume",
-    icon: <Droplets className="h-3 w-3 sm:h-4 sm:w-4" />,
+    icon: <Droplets className="h-4 w-4" />,
     config: volumeConfig,
   },
   {
     value: "weight",
     label: "Weight",
-    icon: <Scale className="h-3 w-3 sm:h-4 sm:w-4" />,
+    icon: <Scale className="h-4 w-4" />,
     config: weightConfig,
   },
   {
     value: "temperature",
-    label: "Temp",
-    icon: <Thermometer className="h-3 w-3 sm:h-4 sm:w-4" />,
+    label: "Temperature",
+    icon: <Thermometer className="h-4 w-4" />,
     config: temperatureConfig,
   },
   {
     value: "length",
     label: "Length",
-    icon: <Ruler className="h-3 w-3 sm:h-4 sm:w-4" />,
+    icon: <Ruler className="h-4 w-4" />,
     config: lengthConfig,
   },
   {
     value: "area",
     label: "Area",
-    icon: <Square className="h-3 w-3 sm:h-4 sm:w-4" />,
+    icon: <Square className="h-4 w-4" />,
     config: areaConfig,
   },
   {
     value: "speed",
     label: "Speed",
-    icon: <Gauge className="h-3 w-3 sm:h-4 sm:w-4" />,
+    icon: <Gauge className="h-4 w-4" />,
     config: speedConfig,
   },
 ];
@@ -63,35 +63,23 @@ const tabs: TabConfig[] = [
 export default function KitchenConverter() {
   return (
     <div className="min-h-screen bg-background flex flex-col items-center p-4">
-      <div className="w-full max-w-md">
-        <div className="flex justify-between items-center mb-1 w-full">
-          <h1 className="text-xl font-bold text-center">Kitchen Converter</h1>
+      <div className="w-full max-w-md flex flex-col gap-4">
+        <div className="flex justify-between items-center w-full">
+          <h1 className="text-xl font-bold">Kitchen Converter</h1>
           <ThemeToggle />
         </div>
 
-        <Tabs defaultValue="volume" className="w-full">
-          <div className="mt-1 flex justify-between items-center">
-            <TabsList className="grid grid-cols-6">
-              {tabs.map((tab) => (
-                <TabsTrigger
-                  key={tab.value}
-                  value={tab.value}
-                  className="flex items-center gap-1 sm:gap-2"
-                >
-                  {tab.icon}
-                  <span className="text-xs sm:text-sm">{tab.label}</span>
-                </TabsTrigger>
-              ))}
-            </TabsList>
-            <BuyMeCoffee />
-          </div>
+        <ResponsiveTabs
+          defaultValue="volume"
+          tabs={tabs.map((tab) => ({
+            ...tab,
+            content: <BaseConverter config={tab.config} />,
+          }))}
+        />
 
-          {tabs.map((tab) => (
-            <TabsContent key={tab.value} value={tab.value}>
-              <BaseConverter config={tab.config} />
-            </TabsContent>
-          ))}
-        </Tabs>
+        <div className="flex justify-center mt-2">
+          <BuyMeCoffee />
+        </div>
       </div>
     </div>
   );
