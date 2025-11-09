@@ -4,6 +4,7 @@ export interface ConverterConfig {
   description: string;
   defaultFromUnit: string;
   defaultToUnit: string;
+  defaultValue?: string;
   options: { value: string; label: string }[];
   calculate: (value: string, fromUnit: string, toUnit: string) => string;
 }
