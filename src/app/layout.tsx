@@ -9,7 +9,7 @@ import "./globals.css";
 const jetbrainsMono = JetBrains_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://kitchen-converter.app"),
+  metadataBase: new URL("https://quikconvert.app"),
   title: "Kitchen & Cooking Converter - Volume, Weight, Temperature & Measurements",
   description:
     "Fast kitchen and cooking converter for recipes, baking, and meal prep. Convert cups to ml, ounces to grams, Fahrenheit to Celsius instantly.",
