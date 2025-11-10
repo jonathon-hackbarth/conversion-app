@@ -35,6 +35,14 @@ export function ThemeProvider({
 
   const handleThemeChange = useCallback((newTheme: Theme) => {
     setTheme(newTheme);
+    // Save to localStorage for persistence
+    if (typeof window !== "undefined") {
+      try {
+        localStorage.setItem("app-theme", newTheme);
+      } catch (e) {
+        console.warn("Failed to save theme preference:", e);
+      }
+    }
   }, []);
 
   useEffect(() => {
