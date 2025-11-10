@@ -1,6 +1,7 @@
 import type React from "react";
 import type { Metadata, Viewport } from "next";
 import { JetBrains_Mono } from "next/font/google";
+import { Analytics } from "@vercel/analytics/react";
 import { ThemeProvider } from "@/components/theme";
 import { getThemeScript } from "@/components/theme/theme-script";
 import { SchemaMarkup } from "@/components/seo";
@@ -93,6 +94,7 @@ export default function RootLayout({
       </head>
       <body className={jetbrainsMono.className}>
         <ThemeProvider>{children}</ThemeProvider>
+        <Analytics />
       </body>
     </html>
   );
