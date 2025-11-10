@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /.next/
+Disallow: /api/
+
+Sitemap: https://kitchen-converter.app/sitemap.xml

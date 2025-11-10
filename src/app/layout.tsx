@@ -3,6 +3,7 @@ import type { Metadata, Viewport } from "next";
 import { JetBrains_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/theme";
 import { getThemeScript } from "@/components/theme/theme-script";
+import { SchemaMarkup } from "@/components/seo";
 import "./globals.css";
 
 const jetbrainsMono = JetBrains_Mono({ subsets: ["latin"] });
@@ -85,6 +86,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: getThemeScript() }}
           suppressHydrationWarning
         />
+        <SchemaMarkup />
       </head>
       <body className={jetbrainsMono.className}>
         <ThemeProvider>{children}</ThemeProvider>
