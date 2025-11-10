@@ -3,4 +3,4 @@ Allow: /
 Disallow: /.next/
 Disallow: /api/
 
-Sitemap: https://kitchen-converter.app/sitemap.xml
+Sitemap: https://quikconvert.app/sitemap.xml

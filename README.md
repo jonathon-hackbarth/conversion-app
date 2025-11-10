@@ -1,4 +1,4 @@
-# Kitchen & Cooking Converter
+# quikconvert
 
 A fast, accessible, and SEO-friendly web application for converting cooking and kitchen measurements instantly.
 

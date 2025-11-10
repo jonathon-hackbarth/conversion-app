@@ -1,5 +1,5 @@
 /**
- * JSON-LD Schema markup for Kitchen Converter app
+ * JSON-LD Schema markup for quikconvert app
  * Provides structured data for search engines
  */
 
@@ -7,10 +7,10 @@ export function getSchemaMarkup() {
   return {
     "@context": "https://schema.org",
     "@type": "WebApplication",
-    name: "Kitchen & Cooking Converter",
+    name: "quikconvert",
     description:
       "Fast kitchen and cooking converter for recipes, baking, and meal prep. Convert cups to ml, ounces to grams, Fahrenheit to Celsius instantly.",
-    url: "https://kitchen-converter.app",
+    url: "https://quikconvert.app",
     applicationCategory: "UtilityApplication",
     offers: {
       "@type": "Offer",

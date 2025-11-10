@@ -10,7 +10,7 @@ const jetbrainsMono = JetBrains_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://quikconvert.app"),
-  title: "Kitchen & Cooking Converter - Volume, Weight, Temperature & Measurements",
+  title: "quikconvert - Volume, Weight, Temperature & Measurements",
   description:
     "Fast kitchen and cooking converter for recipes, baking, and meal prep. Convert cups to ml, ounces to grams, Fahrenheit to Celsius instantly.",
   keywords: [
@@ -43,9 +43,9 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://kitchen-converter.app",
-    siteName: "Kitchen & Cooking Converter",
-    title: "Kitchen & Cooking Converter - Volume, Weight, Temperature & Measurements",
+    url: "https://quikconvert.app",
+    siteName: "quikconvert",
+    title: "quikconvert - Volume, Weight, Temperature & Measurements",
     description:
       "Fast kitchen and cooking converter for recipes, baking, and meal prep. Convert cups to ml, ounces to grams, Fahrenheit to Celsius instantly.",
     images: [
@@ -53,19 +53,19 @@ export const metadata: Metadata = {
         url: "/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "Kitchen & Cooking Converter",
+        alt: "quikconvert",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Kitchen & Cooking Converter",
+    title: "quikconvert",
     description:
       "Convert cooking measurements instantly - cups to ml, ounces to grams, Fahrenheit to Celsius.",
     creator: "@jonathonhackbarth",
   },
   alternates: {
-    canonical: "https://kitchen-converter.app",
+    canonical: "https://quikconvert.app",
   },
 };
 
