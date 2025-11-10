@@ -63,7 +63,7 @@ const tabs: TabConfig[] = [
 export default function KitchenConverter() {
   return (
     <div className="min-h-screen bg-background flex flex-col items-center p-4">
-      <div className="w-full max-w-md flex flex-col gap-4">
+      <div className="w-full max-w-md md:max-w-2xl lg:max-w-4xl flex flex-col gap-4">
         <div className="flex justify-between items-center w-full">
           <h1 className="text-xl font-bold">Kitchen Converter</h1>
           <ThemeToggle />
