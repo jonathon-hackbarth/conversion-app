@@ -10,17 +10,20 @@ const jetbrainsMono = JetBrains_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://kitchen-converter.app"),
-  title: "Kitchen Measurement Converter - Volume, Weight & Temperature",
+  title: "Kitchen & Cooking Converter - Volume, Weight, Temperature & Measurements",
   description:
-    "Convert cups to ml, ounces to grams, Fahrenheit to Celsius instantly. Perfect for recipes, cooking, and baking conversions.",
+    "Fast kitchen and cooking converter for recipes, baking, and meal prep. Convert cups to ml, ounces to grams, Fahrenheit to Celsius instantly.",
   keywords: [
     "kitchen converter",
-    "measurement converter",
     "cooking converter",
     "recipe converter",
+    "baking converter",
+    "cooking measurements",
+    "ingredient converter",
     "volume converter",
     "weight converter",
     "temperature converter",
+    "measurement converter",
   ],
   authors: [{ name: "Jonathan Hackbarth" }],
   creator: "Jonathan Hackbarth",
@@ -41,24 +44,24 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: "https://kitchen-converter.app",
-    siteName: "Kitchen Measurement Converter",
-    title: "Kitchen Measurement Converter - Volume, Weight & Temperature",
+    siteName: "Kitchen & Cooking Converter",
+    title: "Kitchen & Cooking Converter - Volume, Weight, Temperature & Measurements",
     description:
-      "Convert cups to ml, ounces to grams, Fahrenheit to Celsius instantly. Perfect for recipes, cooking, and baking conversions.",
+      "Fast kitchen and cooking converter for recipes, baking, and meal prep. Convert cups to ml, ounces to grams, Fahrenheit to Celsius instantly.",
     images: [
       {
         url: "/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "Kitchen Measurement Converter",
+        alt: "Kitchen & Cooking Converter",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Kitchen Measurement Converter",
+    title: "Kitchen & Cooking Converter",
     description:
-      "Convert cups to ml, ounces to grams, Fahrenheit to Celsius instantly.",
+      "Convert cooking measurements instantly - cups to ml, ounces to grams, Fahrenheit to Celsius.",
     creator: "@jonathonhackbarth",
   },
   alternates: {
