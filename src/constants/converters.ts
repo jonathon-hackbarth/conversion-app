@@ -14,6 +14,8 @@ const volumeFactors = {
   gallon: 3785.41,
   ml: 1,
   liter: 1000,
+  g: 1, // Using water density: 1 ml = 1 gram
+  kg: 1000, // Using water density: 1 ml = 1 gram
 };
 
 const weightFactors = {
@@ -69,6 +71,8 @@ export const volumeConfig: ConverterConfig = {
     { value: "gallon", label: "gal" },
     { value: "ml", label: "ml" },
     { value: "liter", label: "L" },
+    { value: "g", label: "g" },
+    { value: "kg", label: "kg" },
   ],
   calculate: createLinearConverter(volumeFactors),
 };
