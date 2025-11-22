@@ -78,6 +78,7 @@ function formatResult(value: number): string {
 
 export function SimpleConverter() {
   const [value, setValue] = useState("1");
+  const [selectedCategory, setSelectedCategory] = useState<keyof typeof unitsByCategory | null>(null);
   const [fromUnit, setFromUnit] = useState<UnitKey | null>(null);
   const [toUnit, setToUnit] = useState<UnitKey | null>(null);
   
@@ -104,6 +105,17 @@ export function SimpleConverter() {
     setValue(e.target.value);
   }, []);
   
+  const handleCategorySelect = useCallback((category: keyof typeof unitsByCategory) => {
+    setSelectedCategory(category);
+    setFromUnit(null);
+    setToUnit(null);
+  }, []);
+  
+  const handleUnitSelect = useCallback((unit: UnitKey) => {
+    setFromUnit(unit);
+    setToUnit(null);
+  }, []);
+  
   return (
     <div className="w-full max-w-2xl mx-auto space-y-6">
       {/* Step 1: Enter value */}
@@ -123,101 +135,92 @@ export function SimpleConverter() {
         />
       </div>
       
-      {/* Step 2: Select from unit */}
-      <div className="space-y-2">
-        <label className="block text-sm font-medium text-muted-foreground">
-          2. What unit do you have?
-        </label>
-        <div className="space-y-4">
-          {/* Volume units */}
-          <div>
-            <div className="text-xs font-medium text-muted-foreground mb-2">Volume</div>
-            <div className="grid grid-cols-6 gap-2">
-              {unitsByCategory.volume.map((unit) => (
-                <button
-                  key={unit}
-                  onClick={() => {
-                    setFromUnit(unit);
-                    if (toUnit && allUnits[toUnit].category !== allUnits[unit].category) {
-                      setToUnit(null);
-                    }
-                  }}
-                  className={`h-12 rounded-lg text-sm font-semibold transition-all ${
-                    fromUnit === unit
-                      ? "bg-blue-600 dark:bg-blue-700 text-white hover:bg-blue-700 dark:hover:bg-blue-800 ring-2 ring-blue-400"
-                      : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
-                  }`}
-                >
-                  {allUnits[unit].label}
-                </button>
-              ))}
-            </div>
-          </div>
-          
-          {/* Weight units */}
-          <div>
-            <div className="text-xs font-medium text-muted-foreground mb-2">Weight</div>
-            <div className="grid grid-cols-4 gap-2">
-              {unitsByCategory.weight.map((unit) => (
-                <button
-                  key={unit}
-                  onClick={() => {
-                    setFromUnit(unit);
-                    if (toUnit && allUnits[toUnit].category !== allUnits[unit].category) {
-                      setToUnit(null);
-                    }
-                  }}
-                  className={`h-12 rounded-lg text-sm font-semibold transition-all ${
-                    fromUnit === unit
-                      ? "bg-blue-600 dark:bg-blue-700 text-white hover:bg-blue-700 dark:hover:bg-blue-800 ring-2 ring-blue-400"
-                      : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
-                  }`}
-                >
-                  {allUnits[unit].label}
-                </button>
-              ))}
-            </div>
-          </div>
-          
-          {/* Temperature units */}
-          <div>
-            <div className="text-xs font-medium text-muted-foreground mb-2">Temperature</div>
-            <div className="grid grid-cols-2 gap-2">
-              {unitsByCategory.temperature.map((unit) => (
-                <button
-                  key={unit}
-                  onClick={() => {
-                    setFromUnit(unit);
-                    if (toUnit && allUnits[toUnit].category !== allUnits[unit].category) {
-                      setToUnit(null);
-                    }
-                  }}
-                  className={`h-12 rounded-lg text-sm font-semibold transition-all ${
-                    fromUnit === unit
-                      ? "bg-blue-600 dark:bg-blue-700 text-white hover:bg-blue-700 dark:hover:bg-blue-800 ring-2 ring-blue-400"
-                      : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
-                  }`}
-                >
-                  {allUnits[unit].label}
-                </button>
-              ))}
-            </div>
+      {/* Step 2: Select category */}
+      {!selectedCategory && (
+        <div className="space-y-2">
+          <label className="block text-sm font-medium text-muted-foreground">
+            2. What type of unit?
+          </label>
+          <div className="grid grid-cols-3 gap-3">
+            <button
+              onClick={() => handleCategorySelect("volume")}
+              className="h-16 rounded-lg text-lg font-semibold bg-secondary text-secondary-foreground hover:bg-secondary/80 transition-all"
+            >
+              Volume
+            </button>
+            <button
+              onClick={() => handleCategorySelect("weight")}
+              className="h-16 rounded-lg text-lg font-semibold bg-secondary text-secondary-foreground hover:bg-secondary/80 transition-all"
+            >
+              Weight
+            </button>
+            <button
+              onClick={() => handleCategorySelect("temperature")}
+              className="h-16 rounded-lg text-lg font-semibold bg-secondary text-secondary-foreground hover:bg-secondary/80 transition-all"
+            >
+              Temperature
+            </button>
           </div>
         </div>
-      </div>
+      )}
+      
+      {/* Step 2b: Select specific unit from category */}
+      {selectedCategory && !fromUnit && (
+        <div className="space-y-2">
+          <div className="flex items-center justify-between">
+            <label className="block text-sm font-medium text-muted-foreground">
+              2. Select {selectedCategory} unit
+            </label>
+            <button
+              onClick={() => setSelectedCategory(null)}
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+            >
+              ← Back
+            </button>
+          </div>
+          <div className={`grid gap-2 ${
+            selectedCategory === "temperature" ? "grid-cols-2" : 
+            selectedCategory === "weight" ? "grid-cols-4" : "grid-cols-6"
+          }`}>
+            {unitsByCategory[selectedCategory].map((unit) => (
+              <button
+                key={unit}
+                onClick={() => handleUnitSelect(unit)}
+                className="h-14 rounded-lg text-base font-semibold bg-blue-600 dark:bg-blue-700 text-white hover:bg-blue-700 dark:hover:bg-blue-800 transition-all"
+              >
+                {allUnits[unit].label}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
       
       {/* Step 3: Select to unit (only show if from unit is selected) */}
       {fromUnit && (
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-muted-foreground">
-            3. Convert to:
-          </label>
-          <div className="grid grid-cols-4 gap-2">
+          <div className="flex items-center justify-between">
+            <label className="block text-sm font-medium text-muted-foreground">
+              3. Convert to:
+            </label>
+            <button
+              onClick={() => {
+                setFromUnit(null);
+                setToUnit(null);
+              }}
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+            >
+              ← Back
+            </button>
+          </div>
+          <div className={`grid gap-2 ${
+            availableToUnits.length <= 2 ? "grid-cols-1" :
+            availableToUnits.length <= 3 ? "grid-cols-3" : "grid-cols-4"
+          }`}>
             {availableToUnits.map((unit) => (
               <button
                 key={unit}
                 onClick={() => setToUnit(unit)}
-                className={`h-12 rounded-lg text-sm font-semibold transition-all ${
+                className={`h-14 rounded-lg text-base font-semibold transition-all ${
                   toUnit === unit
                     ? "bg-orange-500 dark:bg-orange-600 text-white hover:bg-orange-600 dark:hover:bg-orange-700 ring-2 ring-orange-400"
                     : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
