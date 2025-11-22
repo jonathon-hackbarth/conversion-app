@@ -4,22 +4,25 @@ A fast, accessible, and SEO-friendly web application for converting cooking and 
 
 ## Features
 
-- **Focused Converters**: Volume (cups, ml, tbsp), Weight (oz, grams, kg), Temperature (F, C)
-- **Additional Conversions**: Length, Area, Speed converters for extended utility
-- **Intuitive UI**: Easy-to-use interface with preset buttons and increment controls
+- **Simple 3-Step Process**: Enter number → Select unit you have → Select unit to convert to
+- **Organized Units**: Units grouped by category (Volume, Weight, Temperature) for easy selection
+- **Smart Filtering**: Only shows compatible target units based on source unit
+- **Instant Results**: Conversions happen immediately after selecting target unit
+- **All Conversions in One Place**: No tabs or navigation needed
+- **Supports**: Volume (cups, ml, tbsp), Weight (oz, grams, kg), Temperature (F, C)
 - **Dark Mode**: Automatic light/dark theme support with user preference persistence
 - **Responsive Design**: Optimized for mobile, tablet, and desktop
 - **Accessible**: Full ARIA support and keyboard navigation
 - **SEO Optimized**: Server-side rendering, structured data, Open Graph metadata
-- **Fast**: Lightweight, optimized build with 102KB shared JS
+- **Fast**: Lightweight, optimized build
 
 ## Use Cases
 
+- Quick cooking and baking conversions
 - Recipe scaling and ingredient conversions
-- Baking measurements (cups to grams)
-- International recipe adaptation
-- Temperature conversions for ovens
-- General measurement conversions
+- International recipe adaptation (cups to grams, etc.)
+- Temperature conversions for ovens (Fahrenheit to Celsius)
+- Fast unit conversions with minimal interaction
 
 ## Tech Stack
 

@@ -1,13 +1,10 @@
 import type React from "react";
 import type { Metadata, Viewport } from "next";
-import { JetBrains_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import { ThemeProvider } from "@/components/theme";
 import { getThemeScript } from "@/components/theme/theme-script";
 import { SchemaMarkup } from "@/components/seo";
 import "./globals.css";
-
-const jetbrainsMono = JetBrains_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://quikconvert.app"),
@@ -92,7 +89,7 @@ export default function RootLayout({
         />
         <SchemaMarkup />
       </head>
-      <body className={jetbrainsMono.className}>
+      <body className="font-mono">
         <ThemeProvider>{children}</ThemeProvider>
         <Analytics />
       </body>
