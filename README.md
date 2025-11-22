@@ -4,9 +4,10 @@ A fast, accessible, and SEO-friendly web application for converting cooking and 
 
 ## Features
 
-- **Simple & Fast**: Just type what you have (e.g., "12 oz", "100g", "2 cups") and select what you want
-- **Smart Input**: Natural language parsing - recognizes units automatically
-- **Instant Results**: Conversions happen immediately with minimal clicks
+- **Simple 3-Step Process**: Enter number → Select unit you have → Select unit to convert to
+- **Organized Units**: Units grouped by category (Volume, Weight, Temperature) for easy selection
+- **Smart Filtering**: Only shows compatible target units based on source unit
+- **Instant Results**: Conversions happen immediately after selecting target unit
 - **All Conversions in One Place**: No tabs or navigation needed
 - **Supports**: Volume (cups, ml, tbsp), Weight (oz, grams, kg), Temperature (F, C)
 - **Dark Mode**: Automatic light/dark theme support with user preference persistence
