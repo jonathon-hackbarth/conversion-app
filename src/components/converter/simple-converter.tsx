@@ -209,64 +209,70 @@ export function SimpleConverter() {
         </label>
         <div className="space-y-3">
           {/* Volume units */}
-          <div>
-            <div className="text-xs font-medium text-muted-foreground mb-1.5 px-1">Volume</div>
-            <div className="grid grid-cols-6 gap-1.5">
-              {unitsByCategory.volume.map((unit) => (
-                <button
-                  key={unit}
-                  onClick={() => handleFromUnitSelect(unit)}
-                  className={`h-10 rounded-md text-sm font-semibold transition-all ${
-                    fromUnit === unit
-                      ? "bg-blue-600 dark:bg-blue-700 text-white ring-2 ring-blue-400"
-                      : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
-                  }`}
-                >
-                  {allUnits[unit].label}
-                </button>
-              ))}
+          {(!fromUnit || allUnits[fromUnit].category === "volume") && (
+            <div>
+              <div className="text-xs font-medium text-muted-foreground mb-1.5 px-1">Volume</div>
+              <div className="grid grid-cols-6 gap-1.5">
+                {unitsByCategory.volume.map((unit) => (
+                  <button
+                    key={unit}
+                    onClick={() => handleFromUnitSelect(unit)}
+                    className={`h-10 rounded-md text-sm font-semibold transition-all ${
+                      fromUnit === unit
+                        ? "bg-blue-600 dark:bg-blue-700 text-white ring-2 ring-blue-400"
+                        : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
+                    }`}
+                  >
+                    {allUnits[unit].label}
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
           
           {/* Weight units */}
-          <div>
-            <div className="text-xs font-medium text-muted-foreground mb-1.5 px-1">Weight</div>
-            <div className="grid grid-cols-4 gap-1.5">
-              {unitsByCategory.weight.map((unit) => (
-                <button
-                  key={unit}
-                  onClick={() => handleFromUnitSelect(unit)}
-                  className={`h-10 rounded-md text-sm font-semibold transition-all ${
-                    fromUnit === unit
-                      ? "bg-blue-600 dark:bg-blue-700 text-white ring-2 ring-blue-400"
-                      : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
-                  }`}
-                >
-                  {allUnits[unit].label}
-                </button>
-              ))}
+          {(!fromUnit || allUnits[fromUnit].category === "weight") && (
+            <div>
+              <div className="text-xs font-medium text-muted-foreground mb-1.5 px-1">Weight</div>
+              <div className="grid grid-cols-4 gap-1.5">
+                {unitsByCategory.weight.map((unit) => (
+                  <button
+                    key={unit}
+                    onClick={() => handleFromUnitSelect(unit)}
+                    className={`h-10 rounded-md text-sm font-semibold transition-all ${
+                      fromUnit === unit
+                        ? "bg-blue-600 dark:bg-blue-700 text-white ring-2 ring-blue-400"
+                        : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
+                    }`}
+                  >
+                    {allUnits[unit].label}
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
           
           {/* Temperature units */}
-          <div>
-            <div className="text-xs font-medium text-muted-foreground mb-1.5 px-1">Temperature</div>
-            <div className="grid grid-cols-2 gap-1.5">
-              {unitsByCategory.temperature.map((unit) => (
-                <button
-                  key={unit}
-                  onClick={() => handleFromUnitSelect(unit)}
-                  className={`h-10 rounded-md text-sm font-semibold transition-all ${
-                    fromUnit === unit
-                      ? "bg-blue-600 dark:bg-blue-700 text-white ring-2 ring-blue-400"
-                      : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
-                  }`}
-                >
-                  {allUnits[unit].label}
-                </button>
-              ))}
+          {(!fromUnit || allUnits[fromUnit].category === "temperature") && (
+            <div>
+              <div className="text-xs font-medium text-muted-foreground mb-1.5 px-1">Temperature</div>
+              <div className="grid grid-cols-2 gap-1.5">
+                {unitsByCategory.temperature.map((unit) => (
+                  <button
+                    key={unit}
+                    onClick={() => handleFromUnitSelect(unit)}
+                    className={`h-10 rounded-md text-sm font-semibold transition-all ${
+                      fromUnit === unit
+                        ? "bg-blue-600 dark:bg-blue-700 text-white ring-2 ring-blue-400"
+                        : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
+                    }`}
+                  >
+                    {allUnits[unit].label}
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
       
