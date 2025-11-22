@@ -78,7 +78,6 @@ function formatResult(value: number): string {
 
 export function SimpleConverter() {
   const [value, setValue] = useState("1");
-  const [selectedCategory, setSelectedCategory] = useState<keyof typeof unitsByCategory | null>(null);
   const [fromUnit, setFromUnit] = useState<UnitKey | null>(null);
   const [toUnit, setToUnit] = useState<UnitKey | null>(null);
   
@@ -105,14 +104,24 @@ export function SimpleConverter() {
     setValue(e.target.value);
   }, []);
   
-  const handleCategorySelect = useCallback((category: keyof typeof unitsByCategory) => {
-    setSelectedCategory(category);
+  const handleFromUnitSelect = useCallback((unit: UnitKey) => {
+    setFromUnit(unit);
+    // Reset toUnit if it's from a different category
+    if (toUnit && allUnits[toUnit].category !== allUnits[unit].category) {
+      setToUnit(null);
+    }
+  }, [toUnit]);
+  
+  const handleToUnitSelect = useCallback((unit: UnitKey) => {
+    setToUnit(unit);
+  }, []);
+  
+  const handleClearFromUnit = useCallback(() => {
     setFromUnit(null);
     setToUnit(null);
   }, []);
   
-  const handleUnitSelect = useCallback((unit: UnitKey) => {
-    setFromUnit(unit);
+  const handleClearToUnit = useCallback(() => {
     setToUnit(null);
   }, []);
   
@@ -121,7 +130,7 @@ export function SimpleConverter() {
       {/* Step 1: Enter value */}
       <div className="space-y-2">
         <label htmlFor="value-input" className="block text-sm font-medium text-muted-foreground">
-          1. Enter amount
+          Enter amount
         </label>
         <input
           id="value-input"
@@ -135,100 +144,35 @@ export function SimpleConverter() {
         />
       </div>
       
-      {/* Step 2: Select category */}
-      {!selectedCategory && (
-        <div className="space-y-2">
-          <label className="block text-sm font-medium text-muted-foreground">
-            2. What type of unit?
-          </label>
-          <div className="grid grid-cols-3 gap-3">
-            <button
-              onClick={() => handleCategorySelect("volume")}
-              className="h-16 rounded-lg text-lg font-semibold bg-secondary text-secondary-foreground hover:bg-secondary/80 transition-all"
-            >
-              Volume
-            </button>
-            <button
-              onClick={() => handleCategorySelect("weight")}
-              className="h-16 rounded-lg text-lg font-semibold bg-secondary text-secondary-foreground hover:bg-secondary/80 transition-all"
-            >
-              Weight
-            </button>
-            <button
-              onClick={() => handleCategorySelect("temperature")}
-              className="h-16 rounded-lg text-lg font-semibold bg-secondary text-secondary-foreground hover:bg-secondary/80 transition-all"
-            >
-              Temperature
-            </button>
-          </div>
-        </div>
-      )}
-      
-      {/* Step 2b: Select specific unit from category */}
-      {selectedCategory && !fromUnit && (
-        <div className="space-y-2">
-          <div className="flex items-center justify-between">
-            <label className="block text-sm font-medium text-muted-foreground">
-              2. Select {selectedCategory} unit
-            </label>
-            <button
-              onClick={() => setSelectedCategory(null)}
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-            >
-              ← Back
-            </button>
-          </div>
-          <div className={`grid gap-2 ${
-            selectedCategory === "temperature" ? "grid-cols-2" : 
-            selectedCategory === "weight" ? "grid-cols-4" : "grid-cols-6"
-          }`}>
-            {unitsByCategory[selectedCategory].map((unit) => (
+      {/* Context bar showing current selections */}
+      {(fromUnit || toUnit) && (
+        <div className="flex items-center gap-3 p-4 bg-muted/50 rounded-lg border border-muted">
+          <div className="flex items-center gap-2 flex-1">
+            <span className="text-xs font-medium text-muted-foreground uppercase">From:</span>
+            {fromUnit ? (
               <button
-                key={unit}
-                onClick={() => handleUnitSelect(unit)}
-                className="h-14 rounded-lg text-base font-semibold bg-blue-600 dark:bg-blue-700 text-white hover:bg-blue-700 dark:hover:bg-blue-800 transition-all"
+                onClick={handleClearFromUnit}
+                className="px-3 py-1.5 rounded-md bg-blue-600 dark:bg-blue-700 text-white text-sm font-semibold hover:bg-blue-700 dark:hover:bg-blue-800 transition-colors"
               >
-                {allUnits[unit].label}
+                {allUnits[fromUnit].label} ✕
               </button>
-            ))}
+            ) : (
+              <span className="text-sm text-muted-foreground">-</span>
+            )}
           </div>
-        </div>
-      )}
-      
-      {/* Step 3: Select to unit (only show if from unit is selected) */}
-      {fromUnit && (
-        <div className="space-y-2">
-          <div className="flex items-center justify-between">
-            <label className="block text-sm font-medium text-muted-foreground">
-              3. Convert to:
-            </label>
-            <button
-              onClick={() => {
-                setFromUnit(null);
-                setToUnit(null);
-              }}
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-            >
-              ← Back
-            </button>
-          </div>
-          <div className={`grid gap-2 ${
-            availableToUnits.length <= 2 ? "grid-cols-1" :
-            availableToUnits.length <= 3 ? "grid-cols-3" : "grid-cols-4"
-          }`}>
-            {availableToUnits.map((unit) => (
+          <ArrowRight className="h-4 w-4 text-muted-foreground" />
+          <div className="flex items-center gap-2 flex-1">
+            <span className="text-xs font-medium text-muted-foreground uppercase">To:</span>
+            {toUnit ? (
               <button
-                key={unit}
-                onClick={() => setToUnit(unit)}
-                className={`h-14 rounded-lg text-base font-semibold transition-all ${
-                  toUnit === unit
-                    ? "bg-orange-500 dark:bg-orange-600 text-white hover:bg-orange-600 dark:hover:bg-orange-700 ring-2 ring-orange-400"
-                    : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
-                }`}
+                onClick={handleClearToUnit}
+                className="px-3 py-1.5 rounded-md bg-orange-500 dark:bg-orange-600 text-white text-sm font-semibold hover:bg-orange-600 dark:hover:bg-orange-700 transition-colors"
               >
-                {allUnits[unit].label}
+                {allUnits[toUnit].label} ✕
               </button>
-            ))}
+            ) : (
+              <span className="text-sm text-muted-foreground">-</span>
+            )}
           </div>
         </div>
       )}
@@ -254,6 +198,102 @@ export function SimpleConverter() {
                 {allUnits[toUnit].label}
               </span>
             </div>
+          </div>
+        </div>
+      )}
+      
+      {/* Step 2: Select from unit - show all units organized by category */}
+      <div className="space-y-2">
+        <label className="block text-sm font-medium text-muted-foreground">
+          {fromUnit ? "Change from unit" : "Select from unit"}
+        </label>
+        <div className="space-y-3">
+          {/* Volume units */}
+          <div>
+            <div className="text-xs font-medium text-muted-foreground mb-1.5 px-1">Volume</div>
+            <div className="grid grid-cols-6 gap-1.5">
+              {unitsByCategory.volume.map((unit) => (
+                <button
+                  key={unit}
+                  onClick={() => handleFromUnitSelect(unit)}
+                  className={`h-10 rounded-md text-sm font-semibold transition-all ${
+                    fromUnit === unit
+                      ? "bg-blue-600 dark:bg-blue-700 text-white ring-2 ring-blue-400"
+                      : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
+                  }`}
+                >
+                  {allUnits[unit].label}
+                </button>
+              ))}
+            </div>
+          </div>
+          
+          {/* Weight units */}
+          <div>
+            <div className="text-xs font-medium text-muted-foreground mb-1.5 px-1">Weight</div>
+            <div className="grid grid-cols-4 gap-1.5">
+              {unitsByCategory.weight.map((unit) => (
+                <button
+                  key={unit}
+                  onClick={() => handleFromUnitSelect(unit)}
+                  className={`h-10 rounded-md text-sm font-semibold transition-all ${
+                    fromUnit === unit
+                      ? "bg-blue-600 dark:bg-blue-700 text-white ring-2 ring-blue-400"
+                      : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
+                  }`}
+                >
+                  {allUnits[unit].label}
+                </button>
+              ))}
+            </div>
+          </div>
+          
+          {/* Temperature units */}
+          <div>
+            <div className="text-xs font-medium text-muted-foreground mb-1.5 px-1">Temperature</div>
+            <div className="grid grid-cols-2 gap-1.5">
+              {unitsByCategory.temperature.map((unit) => (
+                <button
+                  key={unit}
+                  onClick={() => handleFromUnitSelect(unit)}
+                  className={`h-10 rounded-md text-sm font-semibold transition-all ${
+                    fromUnit === unit
+                      ? "bg-blue-600 dark:bg-blue-700 text-white ring-2 ring-blue-400"
+                      : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
+                  }`}
+                >
+                  {allUnits[unit].label}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      {/* Step 3: Select to unit (only show if from unit is selected) */}
+      {fromUnit && availableToUnits.length > 0 && (
+        <div className="space-y-2">
+          <label className="block text-sm font-medium text-muted-foreground">
+            {toUnit ? "Change to unit" : "Select to unit"}
+          </label>
+          <div className={`grid gap-1.5 ${
+            availableToUnits.length <= 1 ? "grid-cols-1" :
+            availableToUnits.length <= 3 ? "grid-cols-3" : 
+            availableToUnits.length <= 4 ? "grid-cols-4" : "grid-cols-5"
+          }`}>
+            {availableToUnits.map((unit) => (
+              <button
+                key={unit}
+                onClick={() => handleToUnitSelect(unit)}
+                className={`h-12 rounded-md text-base font-semibold transition-all ${
+                  toUnit === unit
+                    ? "bg-orange-500 dark:bg-orange-600 text-white ring-2 ring-orange-400"
+                    : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
+                }`}
+              >
+                {allUnits[unit].label}
+              </button>
+            ))}
           </div>
         </div>
       )}
