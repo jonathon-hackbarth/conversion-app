@@ -26,55 +26,12 @@ const allUnits = {
 
 type UnitKey = keyof typeof allUnits;
 
-// Parse input like "12 oz", "100g", "2 cups", "1.5L"
-function parseInput(input: string): { value: number; unit: UnitKey | null } {
-  const trimmed = input.trim().toLowerCase();
-  
-  // Try to match number followed by unit
-  const patterns = [
-    // Match number with optional space and unit
-    /^([0-9]+(?:\.[0-9]+)?)\s*(tsp|tbsp|cup|cups|floz|fl\s*oz|ml|l|liter|liters|oz|lb|lbs|g|gram|grams|kg|f|°f|c|°c)$/i,
-  ];
-  
-  for (const pattern of patterns) {
-    const match = trimmed.match(pattern);
-    if (match) {
-      const value = parseFloat(match[1]);
-      const unitStr = match[2].replace(/\s/g, "").toLowerCase();
-      
-      // Normalize unit names
-      const unitMap: Record<string, UnitKey> = {
-        tsp: "tsp",
-        tbsp: "tbsp",
-        cup: "cup",
-        cups: "cup",
-        floz: "floz",
-        ml: "ml",
-        l: "l",
-        liter: "l",
-        liters: "l",
-        oz: "oz",
-        lb: "lb",
-        lbs: "lb",
-        g: "g",
-        gram: "g",
-        grams: "g",
-        kg: "kg",
-        f: "f",
-        "°f": "f",
-        c: "c",
-        "°c": "c",
-      };
-      
-      const unit = unitMap[unitStr] || null;
-      if (unit && !isNaN(value)) {
-        return { value, unit };
-      }
-    }
-  }
-  
-  return { value: 0, unit: null };
-}
+// Group units by category for organized display
+const unitsByCategory = {
+  volume: ["tsp", "tbsp", "cup", "floz", "ml", "l"] as UnitKey[],
+  weight: ["oz", "lb", "g", "kg"] as UnitKey[],
+  temperature: ["f", "c"] as UnitKey[],
+};
 
 function convertValue(value: number, fromUnit: UnitKey, toUnit: UnitKey): number {
   const from = allUnits[fromUnit];
@@ -107,7 +64,7 @@ function formatResult(value: number): string {
   if (Math.abs(value) < 0.01) {
     return value.toFixed(4);
   }
-  // For small numbers, use 2 decimal places
+  // For small numbers, use 3 decimal places
   if (Math.abs(value) < 1) {
     return value.toFixed(3);
   }
@@ -120,75 +77,169 @@ function formatResult(value: number): string {
 }
 
 export function SimpleConverter() {
-  const [input, setInput] = useState("");
-  const [selectedTarget, setSelectedTarget] = useState<UnitKey | null>(null);
+  const [value, setValue] = useState("1");
+  const [fromUnit, setFromUnit] = useState<UnitKey | null>(null);
+  const [toUnit, setToUnit] = useState<UnitKey | null>(null);
   
-  const parsed = useMemo(() => parseInput(input), [input]);
+  const numValue = parseFloat(value) || 0;
   
   const result = useMemo(() => {
-    if (!parsed.unit || !selectedTarget || parsed.value === 0) {
+    if (!fromUnit || !toUnit || numValue === 0) {
       return null;
     }
     
-    const converted = convertValue(parsed.value, parsed.unit, selectedTarget);
+    const converted = convertValue(numValue, fromUnit, toUnit);
     return formatResult(converted);
-  }, [parsed, selectedTarget]);
+  }, [numValue, fromUnit, toUnit]);
   
-  // Get suggested target units based on source unit category
-  const suggestedUnits = useMemo(() => {
-    if (!parsed.unit) {
-      // Show all common units when no input
-      return ["cup", "ml", "oz", "g", "kg", "lb", "f", "c"] as UnitKey[];
-    }
+  // Get available target units based on source unit category
+  const availableToUnits = useMemo(() => {
+    if (!fromUnit) return [];
     
-    const category = allUnits[parsed.unit].category;
-    return Object.entries(allUnits)
-      .filter(([key, unit]) => unit.category === category && key !== parsed.unit)
-      .map(([key]) => key as UnitKey)
-      .slice(0, 8); // Limit to 8 suggestions
-  }, [parsed.unit]);
+    const category = allUnits[fromUnit].category as keyof typeof unitsByCategory;
+    return unitsByCategory[category].filter(unit => unit !== fromUnit);
+  }, [fromUnit]);
   
-  const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setInput(e.target.value);
-  }, []);
-  
-  const handleTargetSelect = useCallback((unit: UnitKey) => {
-    setSelectedTarget(unit);
+  const handleValueChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setValue(e.target.value);
   }, []);
   
   return (
     <div className="w-full max-w-2xl mx-auto space-y-6">
-      {/* Main input */}
+      {/* Step 1: Enter value */}
       <div className="space-y-2">
-        <label htmlFor="convert-input" className="block text-sm font-medium text-muted-foreground">
-          What do you have?
+        <label htmlFor="value-input" className="block text-sm font-medium text-muted-foreground">
+          1. Enter amount
         </label>
         <input
-          id="convert-input"
-          type="text"
-          value={input}
-          onChange={handleInputChange}
-          placeholder="e.g., 12 oz, 100g, 2 cups, 350°F"
+          id="value-input"
+          type="number"
+          inputMode="decimal"
+          value={value}
+          onChange={handleValueChange}
+          placeholder="e.g., 12, 100, 2.5"
           className="w-full h-16 px-6 text-2xl font-semibold rounded-lg border-2 border-input bg-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
           autoFocus
         />
-        {parsed.unit && (
-          <p className="text-sm text-muted-foreground">
-            Converting {parsed.value} {allUnits[parsed.unit].fullName}
-          </p>
-        )}
       </div>
       
+      {/* Step 2: Select from unit */}
+      <div className="space-y-2">
+        <label className="block text-sm font-medium text-muted-foreground">
+          2. What unit do you have?
+        </label>
+        <div className="space-y-4">
+          {/* Volume units */}
+          <div>
+            <div className="text-xs font-medium text-muted-foreground mb-2">Volume</div>
+            <div className="grid grid-cols-6 gap-2">
+              {unitsByCategory.volume.map((unit) => (
+                <button
+                  key={unit}
+                  onClick={() => {
+                    setFromUnit(unit);
+                    if (toUnit && allUnits[toUnit].category !== allUnits[unit].category) {
+                      setToUnit(null);
+                    }
+                  }}
+                  className={`h-12 rounded-lg text-sm font-semibold transition-all ${
+                    fromUnit === unit
+                      ? "bg-blue-600 dark:bg-blue-700 text-white hover:bg-blue-700 dark:hover:bg-blue-800 ring-2 ring-blue-400"
+                      : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
+                  }`}
+                >
+                  {allUnits[unit].label}
+                </button>
+              ))}
+            </div>
+          </div>
+          
+          {/* Weight units */}
+          <div>
+            <div className="text-xs font-medium text-muted-foreground mb-2">Weight</div>
+            <div className="grid grid-cols-4 gap-2">
+              {unitsByCategory.weight.map((unit) => (
+                <button
+                  key={unit}
+                  onClick={() => {
+                    setFromUnit(unit);
+                    if (toUnit && allUnits[toUnit].category !== allUnits[unit].category) {
+                      setToUnit(null);
+                    }
+                  }}
+                  className={`h-12 rounded-lg text-sm font-semibold transition-all ${
+                    fromUnit === unit
+                      ? "bg-blue-600 dark:bg-blue-700 text-white hover:bg-blue-700 dark:hover:bg-blue-800 ring-2 ring-blue-400"
+                      : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
+                  }`}
+                >
+                  {allUnits[unit].label}
+                </button>
+              ))}
+            </div>
+          </div>
+          
+          {/* Temperature units */}
+          <div>
+            <div className="text-xs font-medium text-muted-foreground mb-2">Temperature</div>
+            <div className="grid grid-cols-2 gap-2">
+              {unitsByCategory.temperature.map((unit) => (
+                <button
+                  key={unit}
+                  onClick={() => {
+                    setFromUnit(unit);
+                    if (toUnit && allUnits[toUnit].category !== allUnits[unit].category) {
+                      setToUnit(null);
+                    }
+                  }}
+                  className={`h-12 rounded-lg text-sm font-semibold transition-all ${
+                    fromUnit === unit
+                      ? "bg-blue-600 dark:bg-blue-700 text-white hover:bg-blue-700 dark:hover:bg-blue-800 ring-2 ring-blue-400"
+                      : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
+                  }`}
+                >
+                  {allUnits[unit].label}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      {/* Step 3: Select to unit (only show if from unit is selected) */}
+      {fromUnit && (
+        <div className="space-y-2">
+          <label className="block text-sm font-medium text-muted-foreground">
+            3. Convert to:
+          </label>
+          <div className="grid grid-cols-4 gap-2">
+            {availableToUnits.map((unit) => (
+              <button
+                key={unit}
+                onClick={() => setToUnit(unit)}
+                className={`h-12 rounded-lg text-sm font-semibold transition-all ${
+                  toUnit === unit
+                    ? "bg-orange-500 dark:bg-orange-600 text-white hover:bg-orange-600 dark:hover:bg-orange-700 ring-2 ring-orange-400"
+                    : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
+                }`}
+              >
+                {allUnits[unit].label}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+      
       {/* Result display */}
-      {result && parsed.unit && selectedTarget && (
+      {result && fromUnit && toUnit && (
         <div className="bg-gradient-to-r from-blue-50 to-orange-50 dark:from-blue-950/30 dark:to-orange-950/30 rounded-lg p-6 border-2 border-muted">
           <div className="flex items-center justify-center gap-4 flex-wrap">
             <div className="flex items-baseline gap-2">
               <span className="text-4xl font-bold text-blue-600 dark:text-blue-400">
-                {parsed.value}
+                {value}
               </span>
               <span className="text-xl font-medium text-blue-600/70 dark:text-blue-400/70">
-                {allUnits[parsed.unit].label}
+                {allUnits[fromUnit].label}
               </span>
             </div>
             <ArrowRight className="h-8 w-8 text-muted-foreground" />
@@ -197,48 +248,12 @@ export function SimpleConverter() {
                 {result}
               </span>
               <span className="text-xl font-medium text-orange-600/70 dark:text-orange-400/70">
-                {allUnits[selectedTarget].label}
+                {allUnits[toUnit].label}
               </span>
             </div>
           </div>
         </div>
       )}
-      
-      {/* Target unit selector */}
-      <div className="space-y-2">
-        <label className="block text-sm font-medium text-muted-foreground">
-          Convert to:
-        </label>
-        <div className="grid grid-cols-4 gap-2">
-          {suggestedUnits.map((unit) => {
-            const isSelected = unit === selectedTarget;
-            const isDisabled = parsed.unit && allUnits[parsed.unit].category !== allUnits[unit].category;
-            
-            return (
-              <button
-                key={unit}
-                onClick={() => handleTargetSelect(unit)}
-                disabled={isDisabled}
-                className={`h-16 rounded-lg text-lg font-semibold transition-all ${
-                  isSelected
-                    ? "bg-orange-500 dark:bg-orange-600 text-white hover:bg-orange-600 dark:hover:bg-orange-700 ring-2 ring-orange-400"
-                    : isDisabled
-                    ? "bg-secondary/50 text-secondary-foreground/50 cursor-not-allowed"
-                    : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
-                }`}
-              >
-                {allUnits[unit].label}
-              </button>
-            );
-          })}
-        </div>
-      </div>
-      
-      {/* Helper text */}
-      <div className="text-center text-sm text-muted-foreground space-y-1">
-        <p>Examples: 12 oz, 100g, 2 cups, 1.5L, 350°F</p>
-        <p>Just type what you have and select what you want!</p>
-      </div>
     </div>
   );
 }
