@@ -80,6 +80,7 @@ export function SimpleConverter() {
   const [value, setValue] = useState("1");
   const [fromUnit, setFromUnit] = useState<UnitKey | null>(null);
   const [toUnit, setToUnit] = useState<UnitKey | null>(null);
+  const [inputMode, setInputMode] = useState<"slider" | "text">("slider");
   
   const numValue = parseFloat(value) || 0;
   
@@ -104,6 +105,10 @@ export function SimpleConverter() {
     setValue(e.target.value);
   }, []);
   
+  const handleSliderChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setValue(e.target.value);
+  }, []);
+  
   const handleFromUnitSelect = useCallback((unit: UnitKey) => {
     setFromUnit(unit);
     // Reset toUnit if it's from a different category
@@ -125,23 +130,69 @@ export function SimpleConverter() {
     setToUnit(null);
   }, []);
   
+  const handleReset = useCallback(() => {
+    setValue("1");
+    setFromUnit(null);
+    setToUnit(null);
+    setInputMode("slider");
+  }, []);
+  
+  const toggleInputMode = useCallback(() => {
+    setInputMode(prev => prev === "slider" ? "text" : "slider");
+  }, []);
+  
   return (
     <div className="w-full max-w-2xl mx-auto space-y-6">
-      {/* Step 1: Enter value */}
+      {/* Step 1: Enter value with slider or text input */}
       <div className="space-y-2">
-        <label htmlFor="value-input" className="block text-sm font-medium text-muted-foreground">
-          Enter amount
-        </label>
-        <input
-          id="value-input"
-          type="number"
-          inputMode="decimal"
-          value={value}
-          onChange={handleValueChange}
-          placeholder="e.g., 12, 100, 2.5"
-          className="w-full h-16 px-6 text-2xl font-semibold rounded-lg border-2 border-input bg-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-          autoFocus
-        />
+        <div className="flex items-center justify-between">
+          <label htmlFor="value-input" className="block text-sm font-medium text-muted-foreground">
+            Enter amount
+          </label>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={toggleInputMode}
+              className="px-3 py-1 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors border border-muted rounded-md"
+            >
+              {inputMode === "slider" ? "Type number" : "Use slider"}
+            </button>
+            <button
+              onClick={handleReset}
+              className="px-3 py-1 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors border border-muted rounded-md"
+            >
+              Reset
+            </button>
+          </div>
+        </div>
+        
+        {inputMode === "slider" ? (
+          <div className="space-y-2">
+            <div className="flex items-center gap-4">
+              <input
+                type="range"
+                min="0.1"
+                max="1000"
+                step="0.1"
+                value={value}
+                onChange={handleSliderChange}
+                className="flex-1 h-2 bg-secondary rounded-lg appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-blue-600 [&::-webkit-slider-thumb]:cursor-pointer [&::-moz-range-thumb]:w-5 [&::-moz-range-thumb]:h-5 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-blue-600 [&::-moz-range-thumb]:border-0 [&::-moz-range-thumb]:cursor-pointer"
+              />
+              <div className="w-24 h-16 px-4 flex items-center justify-center text-2xl font-bold rounded-lg border-2 border-input bg-background">
+                {value}
+              </div>
+            </div>
+          </div>
+        ) : (
+          <input
+            id="value-input"
+            type="number"
+            inputMode="decimal"
+            value={value}
+            onChange={handleValueChange}
+            placeholder="e.g., 12, 100, 2.5"
+            className="w-full h-16 px-6 text-2xl font-semibold rounded-lg border-2 border-input bg-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+          />
+        )}
       </div>
       
       {/* Context bar showing current selections */}
