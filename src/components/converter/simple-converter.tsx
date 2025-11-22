@@ -33,7 +33,7 @@ function parseInput(input: string): { value: number; unit: UnitKey | null } {
   // Try to match number followed by unit
   const patterns = [
     // Match number with optional space and unit
-    /^([0-9.]+)\s*(tsp|tbsp|cup|cups|floz|fl\s*oz|ml|l|liter|liters|oz|lb|lbs|g|gram|grams|kg|f|°f|c|°c)$/i,
+    /^([0-9]+(?:\.[0-9]+)?)\s*(tsp|tbsp|cup|cups|floz|fl\s*oz|ml|l|liter|liters|oz|lb|lbs|g|gram|grams|kg|f|°f|c|°c)$/i,
   ];
   
   for (const pattern of patterns) {
@@ -49,7 +49,6 @@ function parseInput(input: string): { value: number; unit: UnitKey | null } {
         cup: "cup",
         cups: "cup",
         floz: "floz",
-        "fl oz": "floz",
         ml: "ml",
         l: "l",
         liter: "l",
